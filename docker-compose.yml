@@ -1,0 +1,13 @@
+services:
+  postgres:
+    image: postgres:18
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgrespw
+    ports:
+      - "6116:5432"
+    volumes:
+      - magos_data:/var/lib/postgresql
+
+volumes:
+  magos_data:

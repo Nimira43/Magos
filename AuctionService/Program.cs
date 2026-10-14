@@ -13,4 +13,13 @@ var app = builder.Build();
 
 app.MapControllers();
 
+try
+{
+    DbInitialiser.InitDb(app);
+}
+catch (Exception e)
+{
+    Console.WriteLine($"Error initialising database: {e.Message}" );
+}
+
 app.Run();
