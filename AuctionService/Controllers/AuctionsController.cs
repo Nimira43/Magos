@@ -1,5 +1,7 @@
 using AuctionService.Data;
+using AuctionService.DTOs;
 using AuctionService.Entities;
+using Mapster;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,12 +12,12 @@ namespace AuctionService.Controllers;
 public class AuctionsController(AuctionDbContext context ) : ControllerBase
 {
     [HttpGet]
-    public async Task<ActionResult<List<Auction>>> GetAuctions()
+    public async Task<ActionResult<List<AuctionDto>>> GetAuctions()
     {
         var auctions = await context.Auctions
-            .Include(x => x.Item)
             .OrderBy(x => x.Item.Make)
             .ThenBy(x => x.Item.Model)
+            .ProjectToType<AuctionDto>()
             .ToListAsync();
         return auctions;
         
