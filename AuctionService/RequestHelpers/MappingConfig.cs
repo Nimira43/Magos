@@ -16,6 +16,5 @@ public class MappingConfig : IRegister
             .Map(dest => dest.Mileage, src => src.Item.Mileage)
             .Map(dest => dest.ImageUrl, src => src.Item.ImageUrl)
             .Map(dest => dest.Description, src => src.Item.Description);
-        
     }
 }
