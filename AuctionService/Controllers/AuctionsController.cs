@@ -36,4 +36,18 @@ public class AuctionsController(AuctionDbContext context ) : ControllerBase
 
         return auction;
     }
+
+    [HttpPost]
+    public async Task<ActionResult<AuctionDto>> CreateAuction(CreateAuctionDto createAuctionDto)
+    {
+        var auction = createAuctionDto.Adapt<Auction>();
+
+        auction.Seller = "TODO: seller";
+
+        context.Auctions.Add(auction);
+
+        await context.SaveChangesAsync();
+        
+        return CreatedAtAction(nameof(GetAuction), new { id = auction.Id }, auction.Adapt<AuctionDto>());
+    }
 }
