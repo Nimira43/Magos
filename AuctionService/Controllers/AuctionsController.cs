@@ -50,4 +50,28 @@ public class AuctionsController(AuctionDbContext context ) : ControllerBase
         
         return CreatedAtAction(nameof(GetAuction), new { id = auction.Id }, auction.Adapt<AuctionDto>());
     }
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateAuction(string id, UpdateAuctionDto updateAuctionDto)
+    {
+        var auction = await context.Auctions
+            .Include(x => x.Item)
+            .FirstOrDefaultAsync(x => x.Id == id);
+
+        if (auction == null)
+        {
+            return NotFound();
+        }
+
+        if (auction.CurrentHighBid > 0)
+        {
+            return BadRequest("Cannot update an auction that has bids.");
+        }
+
+        updateAuctionDto.Adapt(auction.Item);
+
+        await context.SaveChangesAsync();
+        
+        return NoContent();
+    }
 }

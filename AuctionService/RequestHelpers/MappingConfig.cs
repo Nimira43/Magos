@@ -18,5 +18,8 @@ public class MappingConfig : IRegister
             .Map(dest => dest.Description, src => src.Item.Description);
         config.NewConfig<CreateAuctionDto, Auction>()
             .Map(dest => dest.Item, src => src);
+
+        config.NewConfig<UpdateAuctionDto, Item>()
+            .IgnoreNullValues(true);
     }
 }
