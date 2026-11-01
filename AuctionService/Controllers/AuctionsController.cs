@@ -74,4 +74,26 @@ public class AuctionsController(AuctionDbContext context ) : ControllerBase
         
         return NoContent();
     }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteAuction(string id)
+    {
+        var auction = await context.Auctions.FindAsync(id);
+
+        if (auction == null)
+        {
+            return NotFound();
+        }
+
+        if (auction.CurrentHighBid > 0)
+        {
+            return BadRequest("Cannot delete auction that has bids.");
+        }
+
+        context.Auctions.Remove(auction);
+
+        await context.SaveChangesAsync();
+        
+        return NoContent();
+    }
 }
