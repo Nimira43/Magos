@@ -58,6 +58,8 @@ public class AuctionsController(AuctionDbContext context ) : ControllerBase
             .Include(x => x.Item)
             .FirstOrDefaultAsync(x => x.Id == id);
 
+        if (updateAuctionDto.Make == "foo") throw new Exception("bar");
+        
         if (auction == null)
         {
             return NotFound();
